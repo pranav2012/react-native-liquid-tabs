@@ -2,6 +2,10 @@
 
 The iOS 26 Liquid Glass tab bar, on Android.
 
+<p align="center">
+  <img src="docs/demo-android.gif" width="320" alt="The glass tab bar on Android: dragging the lens between tabs over scrolling content" />
+</p>
+
 - A glass **droplet lens** that lifts off the bar when you press it, follows your finger as you drag, magnifies and bends the icons under it, and lands on the tab you let go of.
 - A **real blur** of your screen behind the bar, cropped to the bar and drawn at a quarter of the size on the GPU, so it stays smooth.
 - **120 Hz while it moves** on adaptive-refresh screens, and nothing running while it's idle.
