@@ -1,0 +1,10 @@
+{
+  "extends": "expo/tsconfig.base",
+  "compilerOptions": {
+    "strict": true,
+    "paths": {
+      "react-native-liquid-tabs": ["../src/index"],
+      "react-native-liquid-tabs/*": ["../src/*"]
+    }
+  }
+}
