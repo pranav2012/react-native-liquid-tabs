@@ -1,5 +1,16 @@
-// Reexport the native module. On web, it will be resolved to LiquidTabsModule.web.ts
-// and on native platforms to LiquidTabsModule.ts
-export { default } from './LiquidTabsModule';
-export { default as LiquidTabsView } from './LiquidTabsView';
-export * from './LiquidTabs.types';
+export { BlurTarget, type BlurTargetProps } from "./BlurTarget";
+export { FloatingTabBar, type FloatingTabBarProps } from "./FloatingTabBar";
+export { DEFAULT_COLORS, GlassTabBar, type GlassTabBarProps, type GlassTabItem } from "./GlassTabBar";
+export { TabIcons, type TabIcon } from "./icons";
+export {
+  NATIVE_TAB_BAR,
+  TAB_BAR_GAP,
+  TAB_BAR_HEIGHT,
+  TAB_BAR_SIDE_MARGIN,
+  tabBarScale,
+  useFloatingBarBottom,
+  useKeyboardVisible,
+  useTabBarHeight,
+  useTabBarInset,
+} from "./layout";
+export { setHighFrameRate } from "./native";

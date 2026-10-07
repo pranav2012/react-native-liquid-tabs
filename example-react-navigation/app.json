@@ -1,14 +1,14 @@
 {
   "expo": {
-    "name": "Liquid Tabs",
-    "slug": "react-native-liquid-tabs-example",
+    "name": "Liquid Tabs RN",
+    "slug": "react-native-liquid-tabs-example-rn",
     "version": "1.0.0",
     "orientation": "portrait",
     "icon": "./assets/icon.png",
     "userInterfaceStyle": "automatic",
     "ios": {
       "supportsTablet": true,
-      "bundleIdentifier": "expo.modules.liquidtabs.example"
+      "bundleIdentifier": "expo.modules.liquidtabs.example.rn"
     },
     "android": {
       "adaptiveIcon": {
@@ -18,17 +18,13 @@
         "monochromeImage": "./assets/android-icon-monochrome.png"
       },
       "predictiveBackGestureEnabled": false,
-      "package": "expo.modules.liquidtabs.example"
+      "package": "expo.modules.liquidtabs.example.rn"
     },
     "web": {
       "favicon": "./assets/favicon.png"
     },
-    "scheme": "liquidtabs",
-    "plugins": [
-      "expo-router"
-    ],
+    "scheme": "liquidtabsrn",
     "experiments": {
-      "typedRoutes": false,
       "tsconfigPaths": false
     }
   }

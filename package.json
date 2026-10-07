@@ -1,7 +1,7 @@
 {
   "name": "react-native-liquid-tabs",
   "version": "0.1.0",
-  "description": "iOS 26 Liquid Glass tab bar for Android, with native tabs on iOS",
+  "description": "The iOS 26 Liquid Glass tab bar for Android: a refracting, draggable droplet lens over a real blur at 120 Hz. Native tabs on iOS.",
   "main": "build/index.js",
   "types": "build/index.d.ts",
   "scripts": {
@@ -11,34 +11,55 @@
     "test": "node internal/module_scripts/test.js",
     "prepare": "node internal/module_scripts/prepare.js",
     "open:ios": "node internal/module_scripts/open-ios.js",
-    "open:android": "node internal/module_scripts/open-android.js"
+    "open:android": "node internal/module_scripts/open-android.js",
+    "typecheck": "tsc --noEmit"
   },
   "keywords": [
     "react-native",
     "expo",
-    "react-native-liquid-tabs",
-    "LiquidTabs"
+    "android",
+    "tab-bar",
+    "tabs",
+    "liquid-glass",
+    "glass",
+    "ios-26",
+    "skia",
+    "blur",
+    "expo-router",
+    "react-navigation"
   ],
-  "repository": "https://github.com/pranav2012/react-native-liquid-tabs",
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/pranav2012/react-native-liquid-tabs.git"
+  },
   "bugs": {
     "url": "https://github.com/pranav2012/react-native-liquid-tabs/issues"
   },
-  "author": "Pranav <> (https://github.com/pranav2012)",
+  "author": "Pranav (https://github.com/pranav2012)",
   "license": "MIT",
   "homepage": "https://github.com/pranav2012/react-native-liquid-tabs#readme",
   "dependencies": {},
   "devDependencies": {
     "@babel/core": "^7.26.0",
+    "@react-navigation/bottom-tabs": "^7.20.0",
+    "@react-navigation/native": "^7.1.0",
     "@types/jest": "^29.2.1",
-    "@types/react": "~19.1.1",
-    "babel-preset-expo": "~55.0.8",
+    "@types/react": "~19.2.2",
+    "babel-preset-expo": "~57.0.0",
     "eslint": "~9.39.4",
     "eslint-config-universe": "^15.0.3",
-    "expo": "^57.0.27",
+    "expo": "~57.0.27",
+    "expo-router": "~57.0.25",
     "jest": "^29.7.0",
-    "jest-expo": "~55.0.9",
+    "jest-expo": "~57.0.5",
     "prettier": "^3.0.0",
-    "react-native": "0.82.1",
+    "react": "19.2.3",
+    "react-native": "0.86.3",
+    "react-native-gesture-handler": "~2.32.0",
+    "react-native-reanimated": "4.5.1",
+    "react-native-safe-area-context": "~5.7.0",
+    "react-native-skia": "3.0.1",
+    "react-native-worklets": "0.10.1",
     "typescript": "^5.9.2"
   },
   "jest": {
@@ -48,8 +69,73 @@
     ]
   },
   "peerDependencies": {
-    "expo": "*",
-    "react": "*",
-    "react-native": "*"
-  }
+    "expo": ">=54",
+    "react": ">=19",
+    "react-native": ">=0.79",
+    "react-native-gesture-handler": ">=2.20",
+    "react-native-reanimated": ">=4",
+    "react-native-safe-area-context": ">=5",
+    "react-native-worklets": ">=0.5",
+    "react-native-skia": ">=3",
+    "@shopify/react-native-skia": ">=2",
+    "expo-router": ">=54",
+    "@react-navigation/bottom-tabs": ">=7",
+    "@react-navigation/native": ">=7"
+  },
+  "exports": {
+    ".": {
+      "types": "./build/index.d.ts",
+      "react-native": "./src/index.ts",
+      "default": "./build/index.js"
+    },
+    "./expo-router": {
+      "types": "./build/expo-router.d.ts",
+      "react-native": "./src/expo-router.tsx",
+      "default": "./build/expo-router.js"
+    },
+    "./react-navigation": {
+      "types": "./build/react-navigation.d.ts",
+      "react-native": "./src/react-navigation.tsx",
+      "default": "./build/react-navigation.js"
+    },
+    "./package.json": "./package.json"
+  },
+  "typesVersions": {
+    "*": {
+      "expo-router": [
+        "build/expo-router.d.ts"
+      ],
+      "react-navigation": [
+        "build/react-navigation.d.ts"
+      ]
+    }
+  },
+  "files": [
+    "build",
+    "src",
+    "android/build.gradle",
+    "android/src/main",
+    "expo-module.config.json",
+    "README.md",
+    "LICENSE",
+    "NOTICE"
+  ],
+  "peerDependenciesMeta": {
+    "react-native-skia": {
+      "optional": true
+    },
+    "@shopify/react-native-skia": {
+      "optional": true
+    },
+    "expo-router": {
+      "optional": true
+    },
+    "@react-navigation/bottom-tabs": {
+      "optional": true
+    },
+    "@react-navigation/native": {
+      "optional": true
+    }
+  },
+  "react-native": "src/index.ts"
 }

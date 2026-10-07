@@ -1,0 +1,11 @@
+react-native-liquid-tabs
+Copyright (c) 2026 Pranav. Licensed under the MIT License (see LICENSE).
+
+This package includes material from BlurView by Dmitry Saviuk (Dimezis),
+https://github.com/Dimezis/BlurView, licensed under the Apache License 2.0
+(https://www.apache.org/licenses/LICENSE-2.0):
+
+- android/src/main/res/drawable-nodpi/liquidtabs_blue_noise.webp (the noise texture, unchanged)
+- The Android blur in LiquidBlurView.kt follows BlurView's RenderNode approach
+  (record the target's RenderNode, blur it with a RenderEffect, add noise and an overlay colour),
+  changed to record only the area behind the view at a quarter of its size.
