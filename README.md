@@ -5,7 +5,7 @@
 The iOS 26 Liquid Glass tab bar, on Android.
 
 <p align="center">
-  <img src="docs/demo-android.gif" width="320" alt="The glass tab bar on Android: dragging the lens between tabs over scrolling content" />
+  <img src="docs/demo-android.gif" width="640" alt="The glass tab bar on Android in dark and light mode: dragging the lens between tabs over scrolling content" />
 </p>
 
 - A glass **droplet lens** that lifts off the bar when you press it, follows your finger as you drag, magnifies and bends the icons under it, and lands on the tab you let go of.
@@ -158,7 +158,7 @@ Also exported: `useFloatingBarBottom()` (for chrome that floats just above the b
 
 ## Examples
 
-- `example/`: Expo Router (`pnpm install && npx expo run:android`)
+- `example/`: a travel app on Expo Router (`pnpm install && npx expo run:android`)
 - `example-react-navigation/`: React Navigation bottom tabs
 
 ## Contributing
