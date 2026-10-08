@@ -60,6 +60,7 @@
     "react-native-safe-area-context": "~5.7.0",
     "react-native-skia": "3.0.1",
     "react-native-worklets": "0.10.1",
+    "semantic-release": "^25.0.9",
     "typescript": "^5.9.2"
   },
   "jest": {
@@ -69,18 +70,18 @@
     ]
   },
   "peerDependencies": {
+    "@react-navigation/bottom-tabs": ">=7",
+    "@react-navigation/native": ">=7",
+    "@shopify/react-native-skia": ">=2",
     "expo": ">=54",
+    "expo-router": ">=54",
     "react": ">=19",
     "react-native": ">=0.79",
     "react-native-gesture-handler": ">=2.20",
     "react-native-reanimated": ">=4",
     "react-native-safe-area-context": ">=5",
-    "react-native-worklets": ">=0.5",
     "react-native-skia": ">=3",
-    "@shopify/react-native-skia": ">=2",
-    "expo-router": ">=54",
-    "@react-navigation/bottom-tabs": ">=7",
-    "@react-navigation/native": ">=7"
+    "react-native-worklets": ">=0.5"
   },
   "exports": {
     ".": {

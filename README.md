@@ -1,5 +1,7 @@
 # react-native-liquid-tabs
 
+[![npm](https://img.shields.io/npm/v/react-native-liquid-tabs)](https://www.npmjs.com/package/react-native-liquid-tabs) [![CI](https://github.com/pranav2012/react-native-liquid-tabs/actions/workflows/ci.yml/badge.svg)](https://github.com/pranav2012/react-native-liquid-tabs/actions/workflows/ci.yml) [![license](https://img.shields.io/npm/l/react-native-liquid-tabs)](LICENSE)
+
 The iOS 26 Liquid Glass tab bar, on Android.
 
 <p align="center">
@@ -158,6 +160,10 @@ Also exported: `useFloatingBarBottom()` (for chrome that floats just above the b
 
 - `example/`: Expo Router (`pnpm install && npx expo run:android`)
 - `example-react-navigation/`: React Navigation bottom tabs
+
+## Contributing
+
+Open a pull request against `main`; direct pushes are blocked. PR titles follow [Conventional Commits](https://www.conventionalcommits.org) (`fix: …`, `feat: …`, `feat!: …` for breaking changes), because the squashed title decides the next version: merging to `main` releases to npm and GitHub automatically.
 
 ## Credits
 
