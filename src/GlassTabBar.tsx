@@ -8,7 +8,9 @@ import Animated, {
   useReducedMotion,
   useSharedValue,
   withDelay,
+  withSequence,
   withSpring,
+  withTiming,
   type WithSpringConfig,
 } from "react-native-reanimated";
 import { runOnUISync, scheduleOnRN } from "react-native-worklets";
@@ -116,6 +118,10 @@ const MIN_LIFT_MS = 160;
 const REST_HANDOFF = 0.35;
 // Finger travel (dp) before a press turns into a drag, so a tap's jitter doesn't nudge the drop.
 const DRAG_SLOP = 6;
+// As on iOS, a touch first lights the pill for a couple of frames, then the drop lifts ~40 ms later.
+const FLASH_IN_MS = 30;
+const FLASH_OUT_MS = 120;
+const LIFT_DELAY_MS = 40;
 const ICON_SHADOW_DARK = "rgba(0,0,0,0.45)";
 const ICON_SHADOW_LIGHT = "rgba(255,255,255,0.75)";
 const BASE_INSET = 5;
@@ -131,6 +137,9 @@ const PD = PixelRatio.get();
 // The selected tab's pill tint at rest (premultiplied RGBA).
 const PILL_DARK = premultiplied("#FFFFFF", 0.15);
 const PILL_LIGHT = premultiplied("#0E1018", 0.06);
+// The pill at the peak of the touch flash.
+const FLASH_DARK = premultiplied("#FFFFFF", 0.42);
+const FLASH_LIGHT = premultiplied("#FFFFFF", 0.7);
 
 function smoothstep(from: number, to: number, value: number): number {
   "worklet";
@@ -321,6 +330,14 @@ export function GlassTabBar({
   const moved = useSharedValue(false);
   // The tab drawn selected at rest; moved on release so the new tab lights up before navigation.
   const restIndex = useSharedValue(activeIndex);
+  // The tab last picked on the bar or shown by React, whichever came last. A release sets it on the
+  // UI thread, so a quick second tap never compares against a tab React hasn't caught up with yet.
+  const pickedIndex = useSharedValue(activeIndex);
+  // The last tab picked on the bar that React hasn't shown yet (-1 when none). Until it shows, React
+  // reporting an earlier pick (quick taps outrun navigation) can't pull the drop back there.
+  const awaitedIndex = useSharedValue(-1);
+  // 0..1 touch flash on the pill.
+  const flash = useSharedValue(0);
   // How squashed the drop is by drag speed (0..1) and how much taller it bulges after slowing down,
   // with their spring velocities.
   const flat = useSharedValue(0);
@@ -441,6 +458,10 @@ export function GlassTabBar({
   // Moves the drop when the tab changes from outside (links, first layout). A release already
   // sent it there, so that case doesn't restart it mid-flight.
   useEffect(() => {
+    const awaited = awaitedIndex.get();
+    if (awaited === activeIndex) awaitedIndex.set(-1);
+    else if (awaited >= 0) return;
+    pickedIndex.set(activeIndex);
     if (slot === 0 || dragging.get()) return;
     restIndex.set(activeIndex);
     const target = INSET + activeIndex * slot;
@@ -459,7 +480,7 @@ export function GlassTabBar({
       liquidRunning.set(true);
     });
     startLiquid();
-  }, [activeIndex, dragging, goal, lastIndex, liquidRunning, restIndex, settledOn, slot, x]);
+  }, [activeIndex, awaitedIndex, dragging, goal, lastIndex, liquidRunning, pickedIndex, restIndex, settledOn, slot, x]);
 
   const indexAt = (px: number) => {
     "worklet";
@@ -476,8 +497,11 @@ export function GlassTabBar({
       liquidRunning.set(true);
       scheduleOnRN(startLiquid);
       sincePress.set(0);
-      lift.set(withSpring(1, LIFT_IN));
-      widen.set(withSpring(1, WIDEN_IN));
+      // From rest the pill flashes first; a drop that's still up (quick taps) lifts again at once.
+      const delay = lift.get() < REST_HANDOFF && !reduceMotion ? LIFT_DELAY_MS : 0;
+      if (delay > 0) flash.set(withSequence(withTiming(1, { duration: FLASH_IN_MS }), withTiming(0, { duration: FLASH_OUT_MS })));
+      lift.set(withDelay(delay, withSpring(1, LIFT_IN)));
+      widen.set(withDelay(delay, withSpring(1, WIDEN_IN)));
       press.set(withSpring(1, PRESS_IN));
       const index = indexAt(event.x);
       const home = INSET + index * slot;
@@ -508,12 +532,17 @@ export function GlassTabBar({
       settledOn.set(target);
       goal.set(target);
       landing.set(true);
-      if (index !== activeIndex) scheduleOnRN(onChange, index);
+      if (index !== pickedIndex.get()) {
+        pickedIndex.set(index);
+        awaitedIndex.set(index);
+        scheduleOnRN(onChange, index);
+      }
     });
 
   const uniforms = useDerivedValue(() => {
     repaint.get();
     const l = lift.get();
+    const fl = flash.get();
     const w = Math.max(0, widen.get());
     const motion = Math.min(1, Math.abs(xv.get()) / FULL_SPEED);
     const f = flat.get();
@@ -552,7 +581,7 @@ export function GlassTabBar({
       restCell: l > REST_HANDOFF ? [0, -1] : [BLEED + INSET + slot * restIndex.get(), BLEED + INSET + slot * (restIndex.get() + 1)],
       // At rest the drop is the selected tab's pill: its own shape, tinted, fading out as it lifts.
       pill: [(left + right) / 2, BLEED + HEIGHT / 2, Math.max(PILL_H / 2, (right - left) / 2), halfY],
-      pillColor: (isDark ? PILL_DARK : PILL_LIGHT).map((c) => c * (1 - l)),
+      pillColor: (isDark ? PILL_DARK : PILL_LIGHT).map((c, i) => (c * (1 - fl) + (isDark ? FLASH_DARK : FLASH_LIGHT)[i] * fl) * (1 - l)),
       glow: press.get() * (isDark ? 0.05 : 0.12),
     };
   });
